@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des oiseaux -
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<!-- Header -->
+	<header class="container">
+		<div class="jumbotron mt-3 home-header">
+			<h1 class="display-4">A Field Guide to Angry Birds</h1>
+			<p class="lead">Games that lodge in the brain often have comical stars !</p>
+			<hr class="my-4">
+			<p>To celerate the new year and have the birds with you all day long, here's a gift !</p>
+			<p class="lead">
+				<a class="btn btn-primary btn-md" href="{{path('bird_calendar')}}" role="button">Download PDF Calendar</a>
+			</p>
+		</div>
+	</header>
+
+	<!-- Bird Card -->
+	<main class="container main-content">
+		<div class="row">
+			{% for index, bird in birds %}
+				{{ block ("birdCard") }}
+			{% endfor %}
+		</div>
+	</main>
+{% endblock %}
+
+{#On cree un bloc pour le passer en fonction plus haut #}
+{% block birdCard %}
+	<div class="col-6 col-sm-6 col-md-4 col-lg-3">
+		<div class="card mb-3 bird-card bird-card--{{ cycle(['blue', 'green'], loop.index0)}}">
+			<a href="{{path('bird_show', {'index': index})}}">
+				<h3 class="card-header bird-card__title">{{bird.name}}
+					{% if app.session.get('lastBirdSeen')==index %}
+						&#128064;
+					{% endif %}
+				</h3>
+				<img class="bird-card__image" src="{{ asset('images/' ~ bird.image)}}" width="100%">
+			</a>
+		</div>
+	</div>
+{% endblock %}

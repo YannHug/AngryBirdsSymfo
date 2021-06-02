@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			{% block title %}
+				A Field Guide to Angry Birds
+			{% endblock %}
+		</title>
+		<link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('css/site.css') }}">
+	</head>
+
+	<body>
+
+		{#En twig, quand on fait référence à un fichier, c'est toujours relatif au dossier templates#}
+		{# nav.html.twig est à la racine de templates, donc on met directement son nom#}
+		{% include "nav.html.twig" %}{% block body %}
+		{% endblock %}<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"> </script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+	</body>
+</html>

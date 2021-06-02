@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cart –
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<h1>Your Cart</h1>
+
+		{#
+								            Les messages sont placés dans la session
+								            On les récupère avec app.flashes
+								            Quand on demande à Twig de nous les fournir, ça vide la liste des messages dans la session
+								            qu'importe le nombre de messages qu'il y avait
+								        #}
+		{#
+								            app.flashes fournit un tableau associatif,
+								            chacune des clés est un type de message
+								            et chacune des valeurs est une liste de messages dans un tableau indexé
+								        #}
+		<div class="row">
+			{% for type, messages in app.flashes %}
+				{# Pour afficher tous les messages, on doit refaire une boucle #}
+				{% for message in messages %}
+					<div class="alert alert-dismissible alert-{{ type }}">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						{{ message }}
+					</div>
+				{% endfor %}
+			{% endfor %}
+		</div>
+
+		<table class="table table-hover">
+			<thead>
+				<tr class="table-dark">
+					<th scope="col">Image</th>
+					<th scope="col">Name</th>
+					<th scope="col">Quantity</th>
+					<th scope="col">Cost</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for birdIndex, quantity in cart %}
+					<tr class="table-light">
+						<td><img class="bird-card__image" src="{{ asset('images/' ~ birds[birdIndex].image)}}" width="70px"></td>
+						<td>{{ birds[birdIndex].name }}</td>
+						<td>
+							<form action="{{ path('cart_remove') }}" method="post" class="d-inline">
+								<input type="hidden" name="index" value="{{ birdIndex }}">
+                                {# //! Grace à l'input suivant on peut passer une method en Delete #}
+								<input type="hidden" name="_method" value="DELETE">
+								<button class="btn btn-warning btn-sm mr-2">-</button>
+							</form>
+							{{ quantity }}
+							<form action="{{ path('cart_add') }}" method="post" class="d-inline">
+								<input type="hidden" name="index" value="{{ birdIndex }}">
+								<button class="btn btn-success btn-sm ml-2">+</button>
+							</form>
+						</td>
+						<td>{{ birds[birdIndex].cost }}€</td>
+					</tr>
+				{% else %}
+					<tr class="table-danger">
+						<td colspan="4">Aucun oiseau dans le panier</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	</div>
+{% endblock %}
